@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
-import { uDateUtil } from '@shared/utils/date.util';
+import { NzButtonComponent } from 'ng-zorro-antd/button';
+
+import { Component, inject } from '@angular/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
   selector: 'mb-login',
-  imports: [],
+  imports: [NzButtonComponent, TranslocoModule],
   templateUrl: './login.page.html',
   styleUrl: './login.page.scss',
 })
 export class LoginPage {
-  constructor() {
-    const date = uDateUtil.getFormatDate(new Date());
-    console.log(date);
+  private translocoService = inject(TranslocoService);
+
+  changeLang(lang: string) {
+    this.translocoService.setActiveLang(lang);
   }
 }
