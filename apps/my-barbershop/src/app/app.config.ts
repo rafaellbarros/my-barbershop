@@ -1,4 +1,5 @@
 import { provideNzI18n, pt_BR } from 'ng-zorro-antd/i18n';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(),
+    provideEnvironmentNgxMask(),
     provideAppInitializer(() => inject(ThemeService).loadTheme()),
     provideAppInitializer(() => inject(AuthService).load()),
   ],

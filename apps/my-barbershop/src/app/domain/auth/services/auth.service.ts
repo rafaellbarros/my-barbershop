@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { injectSupabase } from '@shared/functions/inject-supabase.funcitons';
+import { injectSupabase } from '@shared/functions/inject-supabase.function';
 
 import { iUser } from '../interfaces/user.interface';
 

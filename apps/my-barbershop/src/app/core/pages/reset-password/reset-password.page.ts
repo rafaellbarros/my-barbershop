@@ -1,29 +1,52 @@
 import { NzButtonComponent } from 'ng-zorro-antd/button';
-import { NzFlexModule } from 'ng-zorro-antd/flex';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-
-import { Component, inject, model } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { injectSupabase } from '@shared/functions/inject-supabase.funcitons';
+import { Component, inject, ViewChild } from '@angular/core';
+import { FormsModule, Validators } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { injectSupabase } from '@shared/functions/inject-supabase.function';
+import { LoadingService } from '@shared/services/loading/loading.service';
+import { eDynamicField } from '@widget/components/dynamic-form/dynamic-field.enum';
+import { iDynamicFormConfig } from '@widget/components/dynamic-form/dynamic-form-config.interface';
+import { DynamicFormComponent } from '@widget/components/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'mb-reset-password',
-  imports: [RouterLink, NzButtonComponent, NzFlexModule, NzFormModule, NzInputModule, FormsModule],
+  imports: [DynamicFormComponent, NzButtonComponent, NzFormModule, NzInputModule, FormsModule, RouterModule],
   templateUrl: './reset-password.page.html',
   styleUrl: './reset-password.page.scss',
 })
 export class ResetPasswordPage {
   private supabase = injectSupabase();
-  private notficationService = inject(NzNotificationService);
+  private notificationService = inject(NzNotificationService);
+  protected loadingService = inject(LoadingService);
 
-  password = model('');
+  formConfig: iDynamicFormConfig[] = [
+    {
+      label: 'Senha',
+      name: 'password',
+      type: {
+        field: eDynamicField.INPUT,
+        typeField: 'password',
+      },
+      validations: [Validators.required, Validators.minLength(6)],
+      size: 24,
+    },
+  ];
+
+  @ViewChild(DynamicFormComponent) dynamicForm!: DynamicFormComponent;
 
   async submit() {
-    await this.supabase.auth.updateUser({ password: this.password() });
-    this.notficationService.success('Senha alterada', 'Sua senha foi alterada com sucesso');
-    this.password.set('');
+    this.loadingService.start();
+
+    const { password } = this.dynamicForm.form.value;
+
+    await this.supabase.auth.updateUser(password);
+    this.notificationService.success('Senha alterada', 'Sua senha foi alterada com sucesso');
+
+    this.dynamicForm.form.reset();
+
+    this.loadingService.stop();
   }
 }
