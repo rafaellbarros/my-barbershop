@@ -56,6 +56,6 @@ export class ThemeService {
 
   public toggleTheme(): Promise<void> {
     this.currentTheme = this.reverseTheme(this.currentTheme);
-    return this.loadTheme(false);
+    return this.loadTheme(true);
   }
 }

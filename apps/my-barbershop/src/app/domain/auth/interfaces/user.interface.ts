@@ -1,11 +1,6 @@
-import { eUserStatus } from '../enums/user-status.enum';
-
-export interface iUserUser {
+export interface iUser {
   id: string;
-  name: string;
+  fullname: string;
   email: string;
-  password: string;
-  status: eUserStatus;
-  created_at: Date;
-  updated_at: Date;
+  avatar_url: string;
 }
