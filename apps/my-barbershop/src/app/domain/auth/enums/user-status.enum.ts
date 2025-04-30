@@ -1,4 +1,6 @@
 export enum eUserStatus {
-  ACTIVE = 'active',
+  ACTIVE = 'ative',
   INACTIVE = 'inactive',
+  BLOCKED = 'blocked',
+  PENDING = 'pending',
 }
